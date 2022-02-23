@@ -9,7 +9,7 @@ export default class App {
 
       if (pathname === "/") {
         new ProductListPage({ $target });
-      } else if (pathname.indexOf("/products") === 0) {
+      } else if (pathname.indexOf("/products/") === 0) {
         const [, , productId] = pathname.split("/");
         new ProductDetailPage({ $target, productId });
       } else if (pathname === "/cart") {
