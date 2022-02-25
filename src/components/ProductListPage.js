@@ -1,4 +1,4 @@
-import { api } from "../api.js";
+import api from "../api.js";
 
 export default class ProductListPage {
   constructor({ $target }) {
@@ -8,6 +8,7 @@ export default class ProductListPage {
     this.render();
   }
   render() {
+    console.log(api.fetchProducts()); // CORS 에러
     const $title = document.createElement("h1");
     const $lists = document.createElement("ul");
 

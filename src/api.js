@@ -2,18 +2,21 @@ const API_ENDPOINT = "https://uikt6pohhh.execute-api.ap-northeast-2.amazonaws.co
 
 const request = async (url) => {
   try {
-    const result = await fetch(url);
+    const response = await fetch(url, { headers: { "Access-Control-Allow-Headers": "*" } });
 
-    return result.json();
+    const data = await response.json();
+    return data;
   } catch (e) {
     console.log(e);
   }
 };
-export const api = {
-  fetchDetailProduct: (productId) => {
-    return request(`${API_ENDPOINT}/products/${productId}`);
-  },
+const api = {
   fetchProducts: () => {
     return request(`${API_ENDPOINT}/products`);
   },
+  fetchDetailProduct: (productId) => {
+    return request(`${API_ENDPOINT}/products/${productId}`);
+  },
 };
+
+export default api;
