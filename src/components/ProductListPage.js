@@ -1,14 +1,20 @@
-import api from "../api.js";
-
 export default class ProductListPage {
-  constructor({ $target }) {
+  constructor({ $target, fetchData }) {
+    console.log(fetchData().data);
     this.$ListPage = document.createElement("div");
     $target.appendChild(this.$ListPage);
     this.$ListPage.className = "ProductListPage";
+    this.data = [];
+    fetchData();
+  }
+  setData(data) {
+    this.data = data;
+
     this.render();
   }
+
   render() {
-    console.log(api.fetchProducts()); // CORS 에러
+    console.log(this.data);
     const $title = document.createElement("h1");
     const $lists = document.createElement("ul");
 
