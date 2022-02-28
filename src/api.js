@@ -1,4 +1,5 @@
-const API_ENDPOINT = "https://uikt6pohhh.execute-api.ap-northeast-2.amazonaws.com/dev";
+const API_ENDPOINT =
+  "https://cors-anywhere.herokuapp.com/https://uikt6pohhh.execute-api.ap-northeast-2.amazonaws.com/dev";
 
 const request = async (url) => {
   try {
