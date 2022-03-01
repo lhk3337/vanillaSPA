@@ -15,22 +15,28 @@ export default class ProductDetailPage {
   }
   setData(data) {
     this.data = data;
-    // console.log(this.data);
-    console.log(data);
     this.render(this.data);
   }
   render(data) {
-    const { name, price, imageUrl, productOptions } = data;
+    const { name, price, imageUrl, productOptions } = data && data;
+
     this.title.innerText = `${name} 상품 정보`;
     this.productDetail.innerHTML = `
     <img src=${imageUrl} />
     <div class="ProductDetail__info">
       <h2>${name}</h2>
       <div class="ProductDetail__price">${price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원~</div>
-      <select>
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
+      <select class="selectedItem">
+        <option selected>선택하세요.</option>
+        ${productOptions.map((product) =>
+          product.stock === 0
+            ? `<option disabled value=${price + product.price}>${product.name} ${
+                product.price !== 0 ? `(+${product.price}원)` : ""
+              }</option>`
+            : `<option value=${price + product.price}>${product.name} ${
+                product.price !== 0 ? `(+${product.price}원)` : ""
+              }</option>`
+        )}
       </select>
       <div class="ProductDetail__selectedOptions">
         <h3>선택된 상품</h3>

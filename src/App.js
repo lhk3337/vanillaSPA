@@ -8,7 +8,6 @@ export default class App {
   constructor($target) {
     this.router = () => {
       const { pathname } = location;
-      console.log(pathname);
       if (pathname === "/") {
         const productList = new ProductListPage({
           $target,
