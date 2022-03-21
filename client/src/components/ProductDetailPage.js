@@ -50,8 +50,12 @@ export default class ProductDetailPage {
     const $selectedOptions = document.createElement("div");
     $selectedOptions.className = "ProductDetail__selectedOptions";
     document.querySelector(".ProductDetail__info").appendChild($selectedOptions);
-    const { product, selectedOptions } = this.state;
-    console.log(this.state);
+    const { product, selectedOptions } = this.state; // this.setSelected({ ...this.state, selectedOptions: nextSelectedOptions }); nextSelectedOptions -> 88 line
+    console.log(selectedOptions);
+    const total = selectedOptions.reduce(
+      (acc, option) => acc + (product.price + option.optionPrice) * option.quantity,
+      0
+    );
     $selectedOptions.innerHTML = `
     <h3>선택된 상품</h3>
     <ul>
@@ -60,16 +64,39 @@ export default class ProductDetailPage {
         (selected) => `
     <li>
     ${name} ${selected.optionName} ${this.state === undefined ? 0 : price + selected.optionPrice}원
-    <div><input type="number" value="10" />개</div>
+    <div><input id="count" type="text" data-optionId="${selected.optionId}" value="${selected.quantity}" /> 개</div>
   </li>
     `
       )
       .join("")}
    
     </ul>
-    <div class="ProductDetail__totalPrice">0원</div>
+    <div class="ProductDetail__totalPrice">${total.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</div>
     <button class="OrderButton">주문하기</button>
     `;
+
+    $selectedOptions.addEventListener("change", (e) => {
+      if (e.target.tagName === "INPUT") {
+        const nextQuantity = parseInt(e.target.value);
+        const nextSelectedOptions = [...this.state.selectedOptions];
+        console.log(nextSelectedOptions);
+        if (typeof nextQuantity === "number") {
+          const { product } = this.state;
+          const optionId = parseInt(e.target.dataset.optionid);
+          const option = product.productOptions.find((option) => option.id === optionId);
+          const selectedOptionIndex = nextSelectedOptions.findIndex(
+            (selectedOption) => selectedOption.optionId === optionId
+          );
+          nextSelectedOptions[selectedOptionIndex].quantity =
+            option.stock >= nextQuantity ? nextQuantity : option.stock;
+
+          this.setSelected({
+            ...this.state,
+            selectedOptions: nextSelectedOptions,
+          });
+        }
+      }
+    });
 
     const exSelect = document.getElementById("selectedItem");
     exSelect.addEventListener("change", (e) => {
