@@ -1,3 +1,4 @@
+import { getItem, setItem } from "./storage.js";
 export default class ProductDetailPage {
   constructor({ $target, productId, detailFetchData }) {
     this.$DetailPage = document.createElement("div");
@@ -51,7 +52,6 @@ export default class ProductDetailPage {
     $selectedOptions.className = "ProductDetail__selectedOptions";
     document.querySelector(".ProductDetail__info").appendChild($selectedOptions);
     const { product, selectedOptions } = this.state; // this.setSelected({ ...this.state, selectedOptions: nextSelectedOptions }); nextSelectedOptions -> 88 line
-    console.log(selectedOptions);
     const total = selectedOptions.reduce(
       (acc, option) => acc + (product.price + option.optionPrice) * option.quantity,
       0
@@ -72,14 +72,13 @@ export default class ProductDetailPage {
    
     </ul>
     <div class="ProductDetail__totalPrice">${total.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</div>
-    <button class="OrderButton">주문하기</button>
+    <a href="/cart"><button class="OrderButton">주문하기</button></a>
     `;
 
     $selectedOptions.addEventListener("change", (e) => {
       if (e.target.tagName === "INPUT") {
         const nextQuantity = parseInt(e.target.value);
         const nextSelectedOptions = [...this.state.selectedOptions];
-        console.log(nextSelectedOptions);
         if (typeof nextQuantity === "number") {
           const { product } = this.state;
           const optionId = parseInt(e.target.dataset.optionid);
@@ -95,6 +94,22 @@ export default class ProductDetailPage {
             selectedOptions: nextSelectedOptions,
           });
         }
+      }
+    });
+    $selectedOptions.addEventListener("click", (e) => {
+      if (e.target.className === "OrderButton") {
+        const { selectedOptions } = this.state;
+        const cartData = getItem("product_cart", []);
+        setItem(
+          "product_cart",
+          cartData.concat(
+            selectedOptions.map((selectedOption) => ({
+              productId: selectedOption.productId,
+              optionId: selectedOption.optionId,
+              quantity: selectedOption.quantity,
+            }))
+          )
+        );
       }
     });
 
