@@ -3,7 +3,7 @@ import ProductDetailPage from "./components/ProductDetailPage.js";
 import CartPage from "./components/CartPage.js";
 
 import { api } from "./api.js";
-
+import { init } from "./router.js";
 export default function App({ $target }) {
   this.router = () => {
     const { pathname } = location;
@@ -33,6 +33,7 @@ export default function App({ $target }) {
       new CartPage({ $target });
     }
   };
+  init(this.router);
   this.router();
-  window.addEventListener("popstate", this.route);
+  window.addEventListener("popstate", this.router);
 }
