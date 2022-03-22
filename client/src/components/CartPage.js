@@ -1,13 +1,24 @@
+import { getItem } from "./storage.js";
+import { routeChange } from "../router.js";
 export default class CartPage {
   constructor({ $target }) {
     this.DetailPage = document.createElement("div");
-    $target.appendChild(this.DetailPage);
+
     this.DetailPage.className = "ProductListPage";
-    this.render();
+    this.DetailPage.innerHTML = `<h1>장바구니</h1>`;
+    this.state = {
+      products: null,
+    };
+    this.render($target);
   }
-  render() {
-    const title = document.createElement("h1");
-    title.innerText = "장바구니";
-    this.DetailPage.appendChild(title);
+
+  render($target) {
+    const cartData = getItem("product_cart", []);
+    if (cartData.length === 0) {
+      alert("장바구니가 비어있습니다.");
+      routeChange("/");
+    } else {
+      $target.appendChild(this.DetailPage);
+    }
   }
 }
