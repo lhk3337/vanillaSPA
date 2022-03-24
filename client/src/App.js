@@ -1,6 +1,6 @@
 import ProductListPage from "./components/ProductListPage.js";
 import ProductDetailPage from "./components/ProductDetailPage.js";
-import CartPage from "./components/CartPage.js";
+import CartPage from "./components/Cart/CartPage.js";
 
 import { api } from "./api.js";
 import { init } from "./router.js";
