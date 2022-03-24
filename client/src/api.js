@@ -25,6 +25,9 @@ export const api = {
   fetchDetailProduct: async (productId) => {
     return await request(`${API_ENDPOINT}/products/${productId}`);
   },
+  fetchCartProduct: async (id) => {
+    return await request(`${API_ENDPOINT}/products/${id}`);
+  },
 };
 
 export default api;
