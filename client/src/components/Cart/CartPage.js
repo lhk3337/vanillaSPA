@@ -7,6 +7,7 @@ export default class CartPage {
   constructor({ $target }) {
     this.target = $target;
     this.cartComponent = null;
+    this.target = $target;
     this.DetailPage = document.createElement("div");
 
     this.DetailPage.className = "ProductListPage";
@@ -49,6 +50,7 @@ export default class CartPage {
       if (this.state.products && !this.cartComponent) {
         this.cartComponent = new Cart({
           $target: this.DetailPage,
+          $parentTarget: this.target,
           initialState: this.state.products,
         });
       }

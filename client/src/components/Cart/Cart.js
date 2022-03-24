@@ -1,11 +1,14 @@
+import { removeItem } from "../storage.js";
+import { routeChange } from "../../router.js";
 export default class Cart {
-  constructor({ $target, initialState }) {
+  constructor({ $target, $parentTarget, initialState }) {
     this.$component = document.createElement("div");
     this.$component.className = "Cart";
+    this.target = $target;
+    this.parentTarget = $parentTarget;
     this.state = initialState;
     $target.appendChild(this.$component);
     this.setState(this.state);
-    this.render();
   }
   setState(nextState) {
     this.state = nextState;
@@ -40,6 +43,14 @@ export default class Cart {
     </div>
     <button class="OrderButton">주문하기</button>
     `;
+    this.$component.addEventListener("click", (e) => {
+      if (e.target.className === "OrderButton") {
+        alert("주문 되었습니다.");
+        removeItem("product_cart");
+        this.parentTarget.removeChild(this.target);
+        routeChange("/");
+      }
+    });
     return this.$component;
   }
 }
